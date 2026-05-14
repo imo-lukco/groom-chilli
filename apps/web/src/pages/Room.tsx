@@ -151,7 +151,7 @@ export default function Room() {
             </>
           ) : (
             <>
-              <Results players={room.players} templateId={room.templateId} funFactIndex={room.funFactIndex} />
+              <Results players={room.players} funFactIndex={room.funFactIndex} />
               <div className="room-actions" style={{ marginTop: 20 }}>
                 <button className="btn btn-accent" onClick={handleReset}>
                   🔄 Next Round

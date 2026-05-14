@@ -5,7 +5,6 @@ import './Results.css';
 
 interface Props {
   players: Player[];
-  templateId: string;
   funFactIndex: number | null;
 }
 
@@ -44,13 +43,13 @@ function voteCounts(players: Player[]): Map<VoteValue, number> {
   return map;
 }
 
-export default function Results({ players, templateId, funFactIndex }: Props) {
+export default function Results({ players, funFactIndex }: Props) {
   const counts = voteCounts(players);
   const maxCount = Math.max(...counts.values(), 1);
   const consensus = consensusVote(players);
   const unanimous = unanimousVote(players);
   const avg = average(players);
-  const pepper = templateId === 'chilli' && unanimous !== null ? PEPPER_DATA[unanimous] : null;
+  const pepper = unanimous !== null ? PEPPER_DATA[unanimous] : null;
   const funFact = unanimous !== null && funFactIndex !== null ? FUN_FACTS[funFactIndex] : null;
 
   return (

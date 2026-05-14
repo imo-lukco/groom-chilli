@@ -2,12 +2,6 @@ import type { Template } from './types';
 
 export const TEMPLATES: Template[] = [
   {
-    id: 'chilli',
-    name: 'Chilli',
-    emoji: '🌶️',
-    values: [1, 2, 3, 4, 5, '?'],
-  },
-  {
     id: 'veverka',
     name: 'Veverka',
     emoji: '🐿️',
@@ -21,4 +15,4 @@ export const TEMPLATES: Template[] = [
   },
 ];
 
-export const DEFAULT_TEMPLATE_ID = 'chilli';
+export const DEFAULT_TEMPLATE_ID = 'veverka';

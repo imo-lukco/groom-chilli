@@ -25,6 +25,8 @@ export const FUN_FACTS = [
   "Dan Kohout does not wake up THAT early in spite of his name.",
   "Try to drink a glass of milk if these HOT facts are too hot for you! SOME people cannot comprehend the idea of drinking milk.",
   "Make it butter is a clever take on the popular phrase 'Make it better', where one letter is swapped! Who would have thought...",
+  "Male pandas sometimes do handstands against trees to mark their territory higher. David can often be seen doing this",
+    "Unlike most mammals, squirrels cannot burp or vomit."
 ] as const;
 
 export function randomFunFact(seed: number): string {

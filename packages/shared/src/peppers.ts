@@ -6,7 +6,15 @@ export interface PepperInfo {
   description: string;
 }
 
+// Keys match all values used across templates (Veverka: 1,2,3,5,8,13,21 / Panda: 0.5,1,2,3,5,8,13)
 export const PEPPER_DATA: Record<number, PepperInfo> = {
+  0.5: {
+    name: 'Banana Pepper',
+    scovilleMin: 0,
+    scovilleMax: 500,
+    emoji: '🍌',
+    description: 'Barely a tingle — practically a non-task',
+  },
   1: {
     name: 'Bell Pepper',
     scovilleMin: 0,
@@ -28,19 +36,33 @@ export const PEPPER_DATA: Record<number, PepperInfo> = {
     emoji: '🌶️🌶️',
     description: 'Getting spicy — moderate task',
   },
-  4: {
+  5: {
     name: 'Habanero',
     scovilleMin: 100_000,
     scovilleMax: 350_000,
     emoji: '🔥',
     description: 'Serious heat — complex task',
   },
-  5: {
-    name: 'Carolina Reaper',
-    scovilleMin: 1_400_000,
-    scovilleMax: 2_200_000,
-    emoji: '💀',
-    description: 'Danger zone — very complex task',
+  8: {
+    name: 'Ghost Pepper',
+    scovilleMin: 855_000,
+    scovilleMax: 1_041_427,
+    emoji: '👻',
+    description: 'Once used in military grenades — very complex task',
+  },
+  13: {
+    name: 'Trinidad Moruga Scorpion',
+    scovilleMin: 1_200_000,
+    scovilleMax: 2_000_000,
+    emoji: '🦂',
+    description: 'Can cause temporary blindness — extremely complex task',
+  },
+  21: {
+    name: 'Pepper X',
+    scovilleMin: 2_500_000,
+    scovilleMax: 3_180_000,
+    emoji: '☠️',
+    description: 'Current world record holder — pure madness',
   },
 };
 
