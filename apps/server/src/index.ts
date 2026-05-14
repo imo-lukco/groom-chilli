@@ -2,7 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { VoteValue } from '@groom-chilli/shared';
-import * as rm from './roomManager.js';
+import * as rm from './roomManager';
 
 const app = express();
 const httpServer = createServer(app);
