@@ -1,0 +1,33 @@
+.confetti-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -50px;
+  animation: fall 2s ease-in forwards;
+  user-select: none;
+}
+
+/* Sad pieces drift down slowly and wobble miserably */
+.confetti-piece--sad {
+  animation: fall-sad 2.4s ease-in forwards;
+}
+
+@keyframes fall {
+  0%   { transform: translateY(0) rotate(0deg);      opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes fall-sad {
+  0%   { transform: translateY(0) rotate(0deg)  translateX(0);     opacity: 1; }
+  30%  { transform: translateY(30vh) rotate(-15deg) translateX(-12px); }
+  60%  { transform: translateY(65vh) rotate(10deg)  translateX(8px);  }
+  85%  { opacity: 1; }
+  100% { transform: translateY(105vh) rotate(-5deg) translateX(-6px);  opacity: 0; }
+}

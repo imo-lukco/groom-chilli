@@ -1,0 +1,15 @@
+{
+  "name": "groom-chilli",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,server -c cyan,red \"npm run dev -w apps/web\" \"npm run dev -w apps/server\"",
+    "build": "npm run build -w packages/shared && npm run build -w apps/web && npm run build -w apps/server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
