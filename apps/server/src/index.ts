@@ -6,7 +6,7 @@ import * as rm from './roomManager';
 
 const app = express();
 const httpServer = createServer(app);
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN ?? 'http://localhost:5173';
+const ALLOWED_ORIGIN = (process.env.ALLOWED_ORIGIN ?? 'http://localhost:5173').trim();
 
 const io = new Server(httpServer, {
   cors: { origin: ALLOWED_ORIGIN, methods: ['GET', 'POST'] },
