@@ -1,2 +1,4 @@
-/.idea
+.idea
 node_modules
+apps/server/dist
+apps/web/dist
