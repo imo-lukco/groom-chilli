@@ -1,4 +1,4 @@
-import { VoteValue, PEPPER_DATA } from '@groom-chilli/shared';
+import { VoteValue, PEPPER_DATA } from '../types';
 import './ChilliCard.css';
 
 interface Props {

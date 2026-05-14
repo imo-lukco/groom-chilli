@@ -1,7 +1,7 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { VoteValue } from '@groom-chilli/shared';
+import { VoteValue } from './types';
 import * as rm from './roomManager';
 
 const app = express();

@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
-import { Room, TEMPLATES, DEFAULT_TEMPLATE_ID } from '@groom-chilli/shared';
+import { Room, TEMPLATES, DEFAULT_TEMPLATE_ID } from '../types';
 import './Home.css';
 
 export default function Home() {

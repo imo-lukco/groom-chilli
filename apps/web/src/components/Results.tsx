@@ -1,5 +1,4 @@
-import { Player, VoteValue } from '@groom-chilli/shared';
-import { PEPPER_DATA, formatScoville } from '@groom-chilli/shared';
+import { Player, VoteValue, PEPPER_DATA, formatScoville } from '../types';
 import { FUN_FACTS } from '../data/funFacts';
 import './Results.css';
 

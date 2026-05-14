@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
-import { Room as RoomType, VoteValue, TEMPLATES, DEFAULT_TEMPLATE_ID } from '@groom-chilli/shared';
+import { Room as RoomType, VoteValue, TEMPLATES, DEFAULT_TEMPLATE_ID } from '../types';
 import ChilliCard from '../components/ChilliCard';
 import PlayerList from '../components/PlayerList';
 import Results from '../components/Results';

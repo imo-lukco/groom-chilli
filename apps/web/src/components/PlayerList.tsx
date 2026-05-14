@@ -1,4 +1,4 @@
-import { Player } from '@groom-chilli/shared';
+import { Player } from '../types';
 import './PlayerList.css';
 
 const AVATARS = ['🧑‍🍳', '👨‍🍳', '👩‍🍳', '🌮', '🪅', '🎸', '🦜', '🌵', '🎺', '🎉'];

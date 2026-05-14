@@ -1,4 +1,4 @@
-import { Room, Player, VoteValue, DEFAULT_TEMPLATE_ID } from '@groom-chilli/shared';
+import { Room, Player, VoteValue, DEFAULT_TEMPLATE_ID } from './types';
 import { randomUUID } from 'crypto';
 
 const rooms = new Map<string, Room>();
