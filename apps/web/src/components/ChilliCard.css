@@ -65,6 +65,16 @@
   letter-spacing: .07em;
 }
 
+/* Plain card (non-chilli templates) */
+.chilli-card--plain {
+  justify-content: center;
+}
+.chilli-card-value--big {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
 /* Flip-in when revealed */
 .chilli-card.revealed {
   animation: flip-in .4s ease both;

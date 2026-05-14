@@ -133,6 +133,7 @@ export default function Room() {
                     key={String(v)}
                     value={v}
                     selected={myVote === v}
+                    templateId={room.templateId}
                     onClick={() => castVote(v)}
                     disabled={room.revealed}
                   />

@@ -1,13 +1,14 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
-import { Room } from '@groom-chilli/shared';
+import { Room, TEMPLATES, DEFAULT_TEMPLATE_ID } from '@groom-chilli/shared';
 import './Home.css';
 
 export default function Home() {
   const navigate = useNavigate();
   const [playerName, setPlayerName] = useState('');
   const [roomId, setRoomId] = useState('');
+  const [templateId, setTemplateId] = useState(DEFAULT_TEMPLATE_ID);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function Home() {
     if (!name) return;
     setError('');
     sessionStorage.setItem('playerName', name);
-    socket.emit('create_room', { playerName: name });
+    socket.emit('create_room', { playerName: name, templateId });
   }
 
   function handleJoin(e: FormEvent) {
@@ -99,14 +100,22 @@ export default function Home() {
           </button>
         </form>
 
-        <div className="home-scale-preview">
-          <p className="home-scale-label">The Scoville Scale of Work</p>
-          <div className="home-scale-row">
-            {(['🫑', '🌶️', '🌶️🌶️', '🔥', '💀'] as const).map((e, i) => (
-              <div key={i} className="home-scale-item">
-                <span>{e}</span>
-                <small>{['Trivial', 'Easy', 'Medium', 'Hard', 'Reaper'][i]}</small>
-              </div>
+        <div className="home-template-section">
+          <p className="home-scale-label">Choose your template</p>
+          <div className="home-template-grid">
+            {TEMPLATES.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                className={`home-template-card ${templateId === t.id ? 'active' : ''}`}
+                onClick={() => setTemplateId(t.id)}
+              >
+                <span className="home-template-emoji">{t.emoji}</span>
+                <span className="home-template-name">{t.name}</span>
+                <span className="home-template-values">
+                  {t.values.map(String).join(' · ')}
+                </span>
+              </button>
             ))}
           </div>
         </div>
