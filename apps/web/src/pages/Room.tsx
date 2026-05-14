@@ -16,6 +16,7 @@ export default function Room() {
   const [copied, setCopied] = useState(false);
   const [taskDraft, setTaskDraft] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiMode, setConfettiMode] = useState<'happy' | 'sad'>('happy');
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
@@ -28,7 +29,12 @@ export default function Room() {
 
     socket.on('room_updated', ({ room }: { room: RoomType }) => {
       setRoom((prev) => {
-        if (!prev?.revealed && room.revealed) setShowConfetti(true);
+        if (!prev?.revealed && room.revealed) {
+          const numeric = room.players.map((p) => p.vote).filter((v): v is number => typeof v === 'number');
+          const unanimous = numeric.length > 0 && numeric.every((v) => v === numeric[0]);
+          setConfettiMode(unanimous ? 'happy' : 'sad');
+          setShowConfetti(true);
+        }
         return room;
       });
       setTaskDraft((d) => (d !== room.task ? room.task : d));
@@ -97,7 +103,7 @@ export default function Room() {
 
   return (
     <main className="page">
-      {showConfetti && <Confetti onDone={() => setShowConfetti(false)} />}
+      {showConfetti && <Confetti mode={confettiMode} onDone={() => setShowConfetti(false)} />}
 
       {/* Room header */}
       <div className="room-header card">

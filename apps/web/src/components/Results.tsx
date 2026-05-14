@@ -17,23 +17,6 @@ function unanimousVote(players: Player[]): number | null {
   return numeric.every((v) => v === numeric[0]) ? numeric[0] : null;
 }
 
-function consensusVote(players: Player[]): number | null {
-  const numeric = players
-    .map((p) => p.vote)
-    .filter((v): v is number => typeof v === 'number');
-  if (!numeric.length) return null;
-  const freq: Record<number, number> = {};
-  for (const v of numeric) freq[v] = (freq[v] ?? 0) + 1;
-  return Number(Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0]);
-}
-
-function average(players: Player[]): number | null {
-  const numeric = players
-    .map((p) => p.vote)
-    .filter((v): v is number => typeof v === 'number');
-  if (!numeric.length) return null;
-  return numeric.reduce((s, v) => s + v, 0) / numeric.length;
-}
 
 function voteCounts(players: Player[]): Map<VoteValue, number> {
   const map = new Map<VoteValue, number>();
@@ -46,15 +29,15 @@ function voteCounts(players: Player[]): Map<VoteValue, number> {
 export default function Results({ players, funFactIndex }: Props) {
   const counts = voteCounts(players);
   const maxCount = Math.max(...counts.values(), 1);
-  const consensus = consensusVote(players);
   const unanimous = unanimousVote(players);
-  const avg = average(players);
+  const hasVotes = counts.size > 0;
+  const disagreement = hasVotes && unanimous === null;
   const pepper = unanimous !== null ? PEPPER_DATA[unanimous] : null;
   const funFact = unanimous !== null && funFactIndex !== null ? FUN_FACTS[funFactIndex] : null;
 
   return (
     <div className="results">
-      <h2 className="section-title">🎉 Results</h2>
+      <h2 className="section-title">{disagreement ? '🥀 Results' : '🎉 Results'}</h2>
 
       {/* Bar chart */}
       <div className="results-bars">
@@ -72,18 +55,14 @@ export default function Results({ players, funFactIndex }: Props) {
         ))}
       </div>
 
-      {avg !== null && (
-        <div className="results-stats">
-          <div className="stat-item">
-            <span className="stat-label">Average</span>
-            <span className="stat-value">{avg.toFixed(1)}</span>
+      {/* Discussion prompt — only when there is disagreement */}
+      {disagreement && (
+        <div className="discuss-banner">
+          <span className="discuss-banner-icon">🗣️</span>
+          <div>
+            <p className="discuss-banner-title">Time to discuss!</p>
+            <p className="discuss-banner-sub">The team didn't agree — talk it out and vote again.</p>
           </div>
-          {consensus !== null && (
-            <div className="stat-item">
-              <span className="stat-label">Consensus</span>
-              <span className="stat-value">{consensus}</span>
-            </div>
-          )}
         </div>
       )}
 

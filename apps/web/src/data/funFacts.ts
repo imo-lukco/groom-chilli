@@ -3,7 +3,7 @@ export const FUN_FACTS = [
   "Marian HATES the small balls contained inside the protein bars. Why is this? Noone knows.",
   "JD after 8 years of working in Figure, does not know a single fun fact about Figure nor the people that work with him. What a shame... Yes.",
   "Every thursday, there is a lunch container cleanup in the kitchen - Alex swears that this is a fun fact...",
-  "One story point does not equal one manday!(No matter what Krčma says or thinks.)",
+  "One story point does not equal one manday!\n(No matter what Krčma says or thinks.)",
   "Eating spicy food triggers an endorphin rush — the same brain chemicals released during exercise. Spice is basically a workout.",
   "Marián adds sriracha to bryndzové halušky. He did not try to seek professional help yet.",
   "Jin has a secret stash of Hershey's chocolate both iat homa and in the office.",
@@ -26,7 +26,11 @@ export const FUN_FACTS = [
   "Try to drink a glass of milk if these HOT facts are too hot for you! SOME people cannot comprehend the idea of drinking milk.",
   "Make it butter is a clever take on the popular phrase 'Make it better', where one letter is swapped! Who would have thought...",
   "Male pandas sometimes do handstands against trees to mark their territory higher. David can often be seen doing this",
-    "Unlike most mammals, squirrels cannot burp or vomit."
+  "Unlike most mammals, squirrels cannot burp or vomit.",
+  "Squirrels engage in deceptive \"fake\" burials to trick thieves",
+  "To prevent food theft, squirrels will fake bury a nut to throw off other squirrels that are watching.",
+  "Unlike most mammals, squirrels cannot burp or vomit.",
+  "Sloths descend from their trees only about once a week to poop, which can account for up to 33% of their body weight."
 ] as const;
 
 export function randomFunFact(seed: number): string {
