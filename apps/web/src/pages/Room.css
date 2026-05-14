@@ -1,0 +1,81 @@
+.room-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 50vh;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+.room-loading-emoji {
+  font-size: 3rem;
+  animation: spin 1.5s linear infinite;
+}
+
+/* Header */
+.room-header {
+  margin-bottom: 24px;
+}
+.room-code-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.room-code-label {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.room-code {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+  background: #f5ece4;
+  padding: 4px 12px;
+  border-radius: 8px;
+  letter-spacing: .15em;
+  color: var(--text);
+}
+.btn-sm { padding: 6px 14px; font-size: .78rem; }
+
+.room-task-form input {
+  font-size: 1rem;
+}
+
+/* Body layout */
+.room-body {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .room-body {
+    grid-template-columns: 1fr;
+  }
+  .room-sidebar { order: -1; }
+}
+
+/* Cards */
+.cards-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+/* Actions */
+.room-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

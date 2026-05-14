@@ -1,0 +1,180 @@
+/* ── Reset ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ─────────────────────────────────────── */
+:root {
+  --bg:       #FDF3E3;
+  --surface:  #FFFFFF;
+  --primary:  #C0392B;
+  --primary-h:#9B2722;
+  --accent:   #E67E22;
+  --gold:     #F1C40F;
+  --text:     #2C1810;
+  --muted:    #8B6354;
+  --green:    #2D6A4F;
+  --radius:   14px;
+  --shadow:   0 4px 18px rgba(44,24,16,.12);
+}
+
+/* ── Base ────────────────────────────────────────── */
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 28px,
+      rgba(230,126,34,.07) 28px,
+      rgba(230,126,34,.07) 30px
+    );
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── Banner ──────────────────────────────────────── */
+.banner {
+  background: var(--primary);
+  color: #fff;
+  text-align: center;
+  padding: 18px 24px 14px;
+  position: relative;
+  overflow: hidden;
+}
+.banner::before {
+  content: '🌶️ 🌶️ 🌶️ 🌶️ 🌶️ 🌶️ 🌶️ 🌶️ 🌶️ 🌶️';
+  display: block;
+  font-size: 11px;
+  letter-spacing: 10px;
+  opacity: .4;
+  margin-bottom: 6px;
+}
+.banner h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(1.6rem, 5vw, 2.8rem);
+  text-shadow: 2px 3px 0 rgba(0,0,0,.25);
+}
+.banner p {
+  font-size: .85rem;
+  opacity: .85;
+  margin-top: 4px;
+}
+
+/* ── Page wrapper ────────────────────────────────── */
+.page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+/* ── Card ────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 32px;
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  padding: 10px 26px;
+  border-radius: 999px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: .9rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: transform .12s, box-shadow .12s;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(192,57,43,.35);
+}
+.btn-primary:hover { background: var(--primary-h); }
+.btn-secondary {
+  background: #fff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+.btn-secondary:hover { background: #fef0ee; }
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(230,126,34,.35);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 2px solid #e0d4cc;
+}
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+/* ── Inputs ──────────────────────────────────────── */
+input[type="text"] {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #e0d4cc;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--text);
+  background: #fffaf5;
+  transition: border-color .15s;
+  outline: none;
+}
+input[type="text"]:focus { border-color: var(--accent); }
+input[type="text"]::placeholder { color: var(--muted); }
+
+label {
+  display: block;
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 6px;
+}
+
+/* ── Section heading ─────────────────────────────── */
+.section-title {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.25rem;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+/* ── Divider ─────────────────────────────────────── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: var(--muted);
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e0d4cc;
+}
+
+/* ── Error banner ────────────────────────────────── */
+.error-msg {
+  background: #fde8e6;
+  border: 1.5px solid #f5b8b3;
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: .9rem;
+  margin-top: 12px;
+}
