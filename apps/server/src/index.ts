@@ -6,8 +6,10 @@ import * as rm from './roomManager.js';
 
 const app = express();
 const httpServer = createServer(app);
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN ?? 'http://localhost:5173';
+
 const io = new Server(httpServer, {
-  cors: { origin: 'http://localhost:5173', methods: ['GET', 'POST'] },
+  cors: { origin: ALLOWED_ORIGIN, methods: ['GET', 'POST'] },
 });
 
 // Track which room each socket is in
