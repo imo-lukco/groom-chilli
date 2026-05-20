@@ -1,3 +1,8 @@
+# fly.toml app configuration file generated for groom-chilli on 2026-05-20T10:26:53Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
 app = "groom-chilli"
 primary_region = "ams"
 
@@ -14,5 +19,5 @@ primary_region = "ams"
   min_machines_running = 1
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
+  size = 'shared-cpu-1x'
+  memory = '256mb'
