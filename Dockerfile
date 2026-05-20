@@ -1,26 +1,45 @@
-FROM node:22-slim AS build
+# syntax = docker/dockerfile:1
 
+# Adjust NODE_VERSION as desired
+ARG NODE_VERSION=22.21.1
+FROM node:${NODE_VERSION}-slim AS base
+
+LABEL fly_launch_runtime="Node.js"
+
+# Node.js app lives here
 WORKDIR /app
 
-# Copy all package.json files before npm ci so workspaces are resolved correctly
-COPY package.json package-lock.json ./
-COPY apps/web/package.json ./apps/web/package.json
-COPY apps/server/package.json ./apps/server/package.json
+# Set production environment
+ENV NODE_ENV="production"
 
-RUN npm ci
 
+# Throw-away build stage to reduce size of final image
+FROM base AS build
+
+# Install packages needed to build node modules
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+
+# Install node modules
+COPY package-lock.json package.json ./
+RUN npm ci --include=dev
+
+# Copy application code
 COPY . .
 
+# Build application
 RUN npm run build
 
-FROM node:22-slim
+# Remove development dependencies
+RUN npm prune --omit=dev
 
-WORKDIR /app
 
-# Server is bundled by esbuild — no node_modules needed at runtime
-COPY --from=build /app/apps/server/dist ./apps/server/dist
-COPY --from=build /app/apps/web/dist ./apps/web/dist
+# Final stage for app image
+FROM base
 
-EXPOSE 3001
+# Copy built application
+COPY --from=build /app /app
 
-CMD ["node", "apps/server/dist/index.js"]
+# Start the server by default, this can be overwritten at runtime
+EXPOSE 3000
+CMD [ "npm", "run", "start" ]

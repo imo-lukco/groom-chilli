@@ -1,15 +1,19 @@
-app = "groom-chilli"
-primary_region = "ams"
+# fly.toml app configuration file generated for groom-chilli on 2026-05-20T09:58:34Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'groom-chilli'
+primary_region = 'fra'
 
 [build]
-  dockerfile = "Dockerfile"
 
 [http_service]
-  internal_port = 3001
+  internal_port = 8080
   force_https = true
-  auto_stop_machines = "off"
+  auto_stop_machines = 'off'
   min_machines_running = 1
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
+  size = 'shared-cpu-1x'
+  memory = '256mb'
