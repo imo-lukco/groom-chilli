@@ -128,7 +128,7 @@ input[type="text"] {
   outline: none;
 }
 input[type="text"]:focus { border-color: var(--accent); }
-input[type="text"]::placeholder { color: var(--muted); }
+input[type="text"]::placeholder { color: #c5a99d; }
 
 label {
   display: block;
