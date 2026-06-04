@@ -3,4 +3,6 @@ node_modules
 apps/server/dist
 apps/web/dist
 packages/shared/dist
-.env*.local
+.env
+.env.*
+!.env.example
