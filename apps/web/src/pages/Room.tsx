@@ -114,7 +114,7 @@ export default function Room() {
           <button className="btn btn-ghost btn-sm" onClick={copyCode}>
             {copied ? '✅ Copied!' : '🔗 Share'}
           </button>
-          <button className="btn btn-ghost btn-sm room-leave-btn" onClick={() => navigate('/')}>
+          <button className="btn btn-ghost btn-sm room-leave-btn" onClick={() => { socket.emit('leave_room'); navigate('/'); }}>
             ← Leave
           </button>
         </div>

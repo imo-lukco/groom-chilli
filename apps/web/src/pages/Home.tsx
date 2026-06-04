@@ -67,7 +67,7 @@ export default function Home() {
             onChange={(e) => { setPlayerName(e.target.value); setError(''); }}
             maxLength={32}
           />
-          <p className="home-name-hint">Used whether you join or create a room</p>
+          <p className="home-name-hint">Add your name to join or create a room</p>
         </div>
 
         <form className="home-join-form" onSubmit={handleJoin}>
@@ -122,9 +122,6 @@ export default function Home() {
         >
           🌶️ Create a New Room
         </button>
-        {!playerName.trim() && (
-          <p className="home-create-hint">Enter your name above to create a room</p>
-        )}
       </div>
     </main>
   );

@@ -68,6 +68,15 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('room_updated', { room });
   });
 
+  socket.on('leave_room', () => {
+    const roomId = socketRoom.get(socket.id);
+    socketRoom.delete(socket.id);
+    if (!roomId) return;
+    socket.leave(roomId);
+    const room = rm.removePlayer(roomId, socket.id);
+    if (room) io.to(roomId).emit('room_updated', { room });
+  });
+
   socket.on('disconnect', () => {
     const roomId = socketRoom.get(socket.id);
     socketRoom.delete(socket.id);
