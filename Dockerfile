@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY apps/web/package.json ./apps/web/package.json
 COPY apps/server/package.json ./apps/server/package.json
+COPY packages/shared/package.json ./packages/shared/package.json
 
 RUN npm ci
 
@@ -21,6 +22,6 @@ WORKDIR /app
 COPY --from=build /app/apps/server/dist ./apps/server/dist
 COPY --from=build /app/apps/web/dist ./apps/web/dist
 
-EXPOSE 3001
+EXPOSE 8080
 
 CMD ["node", "apps/server/dist/index.js"]

@@ -2,11 +2,12 @@
   "name": "groom-chilli",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "dev": "concurrently -n web,server -c cyan,red \"npm run dev -w apps/web\" \"npm run dev -w apps/server\"",
-    "build": "npm install --include=dev && npm run build -w apps/web && npm run build -w apps/server",
+    "build": "npm run build -w apps/web && npm run build -w apps/server",
     "start": "node apps/server/dist/index.js"
   },
   "devDependencies": {
