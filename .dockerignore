@@ -1,0 +1,10 @@
+node_modules
+apps/web/node_modules
+apps/server/node_modules
+packages/shared/node_modules
+apps/web/dist
+apps/server/dist
+packages/shared/dist
+.git
+.env
+.env.*
