@@ -35,7 +35,7 @@ export default function PlayerList({ players, myId, revealed }: Props) {
                   <span className="vote-badge muted">—</span>
                 )
               ) : p.vote !== null ? (
-                <span className="voted-dot">🌶️</span>
+                <span className="voted-dot">🔴</span>
               ) : (
                 <span className="pending-dot" />
               )}

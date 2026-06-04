@@ -18,6 +18,26 @@
 
 .home-name-row { margin-bottom: 20px; }
 
+.home-name-hint {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: 6px;
+  text-align: center;
+}
+
+input.room-code-input {
+  font-family: 'Courier New', monospace;
+  background: #f5ece4;
+  letter-spacing: .1em;
+}
+
+.home-create-hint {
+  text-align: center;
+  font-size: .8rem;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
 .home-create-btn {
   width: 100%;
   justify-content: center;
@@ -29,14 +49,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 4px;
 }
-.home-join-form .btn { align-self: flex-start; }
+.home-join-form .btn { align-self: center; }
 
 /* Template selector */
 .home-template-section {
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 2px dashed #e0d4cc;
+  margin-bottom: 20px;
 }
 .home-scale-label {
   font-family: 'Pacifico', cursive;

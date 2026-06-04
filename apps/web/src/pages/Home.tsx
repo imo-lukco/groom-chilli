@@ -1,13 +1,14 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { socket } from '../socket';
 import { Room, TEMPLATES, DEFAULT_TEMPLATE_ID } from '../types';
 import './Home.css';
 
 export default function Home() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [playerName, setPlayerName] = useState('');
-  const [roomId, setRoomId] = useState('');
+  const [roomId, setRoomId] = useState(() => searchParams.get('room')?.toUpperCase() ?? '');
   const [templateId, setTemplateId] = useState(DEFAULT_TEMPLATE_ID);
   const [error, setError] = useState('');
 
@@ -40,7 +41,8 @@ export default function Home() {
   function handleJoin(e: FormEvent) {
     e.preventDefault();
     const name = playerName.trim();
-    if (!name || !roomId.trim()) return;
+    if (!name) { setError('Enter your name before joining'); return; }
+    if (!roomId.trim()) return;
     setError('');
     sessionStorage.setItem('playerName', name);
     socket.emit('join_room', { roomId: roomId.trim(), playerName: name });
@@ -62,22 +64,11 @@ export default function Home() {
             type="text"
             placeholder="e.g. Diego 🧑‍🍳"
             value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
+            onChange={(e) => { setPlayerName(e.target.value); setError(''); }}
             maxLength={32}
           />
+          <p className="home-name-hint">Used whether you join or create a room</p>
         </div>
-
-        {error && <div className="error-msg">⚠️ {error}</div>}
-
-        <button
-          className="btn btn-primary home-create-btn"
-          onClick={handleCreate}
-          disabled={!playerName.trim()}
-        >
-          🌶️ Create a New Room
-        </button>
-
-        <div className="divider">or join an existing room</div>
 
         <form className="home-join-form" onSubmit={handleJoin}>
           <div>
@@ -85,20 +76,24 @@ export default function Home() {
             <input
               id="roomId"
               type="text"
+              className="room-code-input"
               placeholder="e.g. AB12CD34"
               value={roomId}
-              onChange={(e) => setRoomId(e.target.value.toUpperCase())}
+              onChange={(e) => { setRoomId(e.target.value.toUpperCase()); setError(''); }}
               maxLength={8}
             />
           </div>
+          {error && <div className="error-msg">⚠️ {error}</div>}
           <button
             className="btn btn-secondary"
             type="submit"
-            disabled={!playerName.trim() || !roomId.trim()}
+            disabled={!roomId.trim()}
           >
             Join Room →
           </button>
         </form>
+
+        <div className="divider">or create a new room</div>
 
         <div className="home-template-section">
           <p className="home-scale-label">Choose your template</p>
@@ -119,6 +114,17 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        <button
+          className="btn btn-primary home-create-btn"
+          onClick={handleCreate}
+          disabled={!playerName.trim()}
+        >
+          🌶️ Create a New Room
+        </button>
+        {!playerName.trim() && (
+          <p className="home-create-hint">Enter your name above to create a room</p>
+        )}
       </div>
     </main>
   );

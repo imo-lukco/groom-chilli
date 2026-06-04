@@ -80,7 +80,7 @@ groom-chilli/
 ├── apps/
 │   ├── server/          Express + Socket.IO backend
 │   │   └── src/
-│   │       ├── index.ts         entry point, socket event handlers, static file serving
+│   │       ├── index.ts         entry point, socket event handlers, static file servingv
 │   │       ├── roomManager.ts   in-memory room state (create, join, vote, reveal, reset)
 │   │       └── types.ts         server-local types
 │   └── web/             React frontend

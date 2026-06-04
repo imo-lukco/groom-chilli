@@ -1,6 +1,6 @@
 # CLAUDE.md — Groom Chilli
 
-For project architecture, socket event protocol, types, and key constraints see [AGENTS.md](./AGENTS.md).
+For project architecture, socket event protocol, types, key constraints, and **UI/design system rules** see [AGENTS.md](./AGENTS.md).
 
 ## Dev commands
 

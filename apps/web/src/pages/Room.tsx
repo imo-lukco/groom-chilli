@@ -86,7 +86,8 @@ export default function Room() {
   }
 
   function copyCode() {
-    navigator.clipboard.writeText(room?.id ?? '').then(() => {
+    const url = `${window.location.origin}/?room=${room?.id}`;
+    navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -111,7 +112,10 @@ export default function Room() {
           <span className="room-code-label">Room code</span>
           <code className="room-code">{room.id}</code>
           <button className="btn btn-ghost btn-sm" onClick={copyCode}>
-            {copied ? '✅ Copied!' : '📋 Copy'}
+            {copied ? '✅ Copied!' : '🔗 Share'}
+          </button>
+          <button className="btn btn-ghost btn-sm room-leave-btn" onClick={() => navigate('/')}>
+            ← Leave
           </button>
         </div>
 
