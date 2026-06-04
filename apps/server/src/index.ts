@@ -1,5 +1,6 @@
 import express from 'express';
 import { createServer } from 'http';
+import path from 'path';
 import { Server } from 'socket.io';
 import { VoteValue } from './types';
 import * as rm from './roomManager';
@@ -7,6 +8,9 @@ import * as rm from './roomManager';
 const app = express();
 const httpServer = createServer(app);
 const ALLOWED_ORIGIN = (process.env.ALLOWED_ORIGIN ?? 'http://localhost:5173').trim();
+const WEB_DIST = path.join(__dirname, '../../web/dist');
+
+app.use(express.static(WEB_DIST));
 
 const io = new Server(httpServer, {
   cors: { origin: ALLOWED_ORIGIN, methods: ['GET', 'POST'] },
@@ -72,6 +76,8 @@ io.on('connection', (socket) => {
     if (room) io.to(roomId).emit('room_updated', { room });
   });
 });
+
+app.get('*', (_req, res) => res.sendFile(path.join(WEB_DIST, 'index.html')));
 
 const PORT = process.env.PORT ?? 3001;
 httpServer.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
