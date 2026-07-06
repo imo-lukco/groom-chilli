@@ -45,15 +45,25 @@ export default function Room() {
       navigate('/');
     });
 
-    // If we land here directly (page refresh), send a join request
+    // Re-join the room whenever the socket (re)connects. socket.io reconnects
+    // with a fresh socket.id after any network blip / tab backgrounding, and the
+    // server keys rooms by socket.id — without re-joining, votes silently drop
+    // and cards appear frozen until a manual refresh.
     const name = sessionStorage.getItem('playerName');
-    if (name && roomId) {
-      socket.emit('join_room', { roomId, playerName: name });
-    } else if (roomId) {
+    const rejoin = () => {
+      if (name && roomId) socket.emit('join_room', { roomId, playerName: name });
+    };
+
+    if (!name && roomId) {
       navigate('/');
+    } else {
+      socket.on('connect', rejoin);
+      if (!socket.connected) socket.connect();
+      else rejoin();
     }
 
     return () => {
+      socket.off('connect', rejoin);
       socket.off('joined');
       socket.off('room_updated');
       socket.off('error');
