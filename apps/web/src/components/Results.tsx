@@ -17,6 +17,11 @@ function unanimousVote(players: Player[]): number | null {
 }
 
 
+// Numeric votes sort ascending; '?' sinks to the bottom.
+function voteRank(v: VoteValue): number {
+  return typeof v === 'number' ? v : Number.POSITIVE_INFINITY;
+}
+
 function voteCounts(players: Player[]): Map<VoteValue, number> {
   const map = new Map<VoteValue, number>();
   for (const p of players) {
@@ -40,7 +45,9 @@ export default function Results({ players, funFactIndex }: Props) {
 
       {/* Bar chart */}
       <div className="results-bars">
-        {[...counts.entries()].sort().map(([val, count]) => (
+        {[...counts.entries()]
+          .sort((a, b) => b[1] - a[1] || voteRank(a[0]) - voteRank(b[0]))
+          .map(([val, count]) => (
           <div key={String(val)} className="bar-row">
             <span className="bar-val">{val}</span>
             <div className="bar-track">
