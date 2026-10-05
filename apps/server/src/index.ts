@@ -20,20 +20,25 @@ const io = new Server(httpServer, {
 const socketRoom = new Map<string, string>();
 
 io.on('connection', (socket) => {
-  socket.on('create_room', ({ playerName, templateId }: { playerName: string; templateId?: string }) => {
-    const room = rm.createRoom(playerName, socket.id, templateId);
+  socket.on('create_room', ({ playerName, clientId, templateId }: { playerName: string; clientId: string; templateId?: string }) => {
+    const room = rm.createRoom(playerName, socket.id, clientId, templateId);
     socketRoom.set(socket.id, room.id);
     socket.join(room.id);
     socket.emit('joined', { room, playerId: socket.id });
   });
 
-  socket.on('join_room', ({ roomId, playerName }: { roomId: string; playerName: string }) => {
+  socket.on('join_room', ({ roomId, playerName, clientId }: { roomId: string; playerName: string; clientId: string }) => {
     const id = roomId.trim().toUpperCase();
+    rm.ensurePermanentRoom(id);
     if (!rm.roomExists(id)) {
       socket.emit('error', { message: `Room "${id}" not found` });
       return;
     }
-    const room = rm.joinRoom(id, playerName, socket.id);
+    if (!rm.claimName(id, playerName, socket.id, clientId)) {
+      socket.emit('error', { message: `Someone at this table is already called "${playerName}"`, code: 'name_taken' });
+      return;
+    }
+    const room = rm.joinRoom(id, playerName, socket.id, clientId);
     socketRoom.set(socket.id, room.id);
     socket.join(room.id);
     socket.emit('joined', { room, playerId: socket.id });

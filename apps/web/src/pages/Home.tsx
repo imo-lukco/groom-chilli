@@ -1,14 +1,14 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { socket } from '../socket';
+import { useNavigate } from 'react-router-dom';
+import { socket, clientId } from '../socket';
 import { Room, TEMPLATES, DEFAULT_TEMPLATE_ID } from '../types';
+import { skin } from '../skins';
 import './Home.css';
 
 export default function Home() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [playerName, setPlayerName] = useState('');
-  const [roomId, setRoomId] = useState(() => searchParams.get('room')?.toUpperCase() ?? '');
+  const [playerName, setPlayerName] = useState(() => localStorage.getItem('playerName') ?? '');
+  const [roomId, setRoomId] = useState('');
   const [templateId, setTemplateId] = useState(DEFAULT_TEMPLATE_ID);
   const [error, setError] = useState('');
 
@@ -35,7 +35,7 @@ export default function Home() {
     if (!name) return;
     setError('');
     sessionStorage.setItem('playerName', name);
-    socket.emit('create_room', { playerName: name, templateId });
+    socket.emit('create_room', { playerName: name, clientId, templateId });
   }
 
   function handleJoin(e: FormEvent) {
@@ -45,14 +45,14 @@ export default function Home() {
     if (!roomId.trim()) return;
     setError('');
     sessionStorage.setItem('playerName', name);
-    socket.emit('join_room', { roomId: roomId.trim(), playerName: name });
+    socket.emit('join_room', { roomId: roomId.trim(), playerName: name, clientId });
   }
 
   return (
     <main className="page">
       <div className="card home-card">
         <div className="home-hero">
-          <span className="home-hero-emoji">🌶️</span>
+          <span className="home-hero-emoji">{skin.heroEmoji}</span>
           <h2 className="section-title" style={{ fontSize: '1.7rem' }}>¡Bienvenidos!</h2>
           <p className="home-sub">The spiciest way to estimate your tasks</p>
         </div>

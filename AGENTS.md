@@ -50,13 +50,15 @@ All real-time communication goes through Socket.IO. The server tracks which room
 
 | Event | Payload type | Effect |
 |-------|-------------|--------|
-| `create_room` | `{ playerName: string, templateId?: string }` | Creates room, auto-joins sender, emits `joined` back |
-| `join_room` | `{ roomId: string, playerName: string }` | Joins existing room; emits `error` if not found |
+| `create_room` | `{ playerName: string, clientId: string, templateId?: string }` | Creates room, auto-joins sender, emits `joined` back |
+| `join_room` | `{ roomId: string, playerName: string, clientId: string }` | Joins existing room (creates a permanent room such as `PANDA` on demand); emits `error` if not found, or `error` with `code: 'name_taken'` if another player already uses the name (case-insensitive). A holder with the same `clientId` is the same tab reconnecting and is replaced |
 | `cast_vote` | `{ vote: VoteValue }` | Records vote for sender; broadcasts `room_updated` |
 | `reveal` | — | Flips `room.revealed = true`; broadcasts `room_updated` |
 | `reset` | — | Clears all votes and revealed state; broadcasts `room_updated` |
 | `set_task` | `{ task: string }` | Updates `room.task`; broadcasts `room_updated` |
 | `disconnect` | — | Removes player from room; broadcasts `room_updated` (or nothing if room empty) |
+
+`clientId` is a random id per page load (see `apps/web/src/socket.ts`). It survives socket reconnects, which get a new `socket.id`.
 
 ### Server → Client
 
@@ -64,7 +66,7 @@ All real-time communication goes through Socket.IO. The server tracks which room
 |-------|-------------|-----------|
 | `joined` | `{ room: Room, playerId: string }` | Joining client only |
 | `room_updated` | `{ room: Room }` | All clients in the room |
-| `error` | `{ message: string }` | Triggering client only |
+| `error` | `{ message: string, code?: 'name_taken' }` | Triggering client only |
 
 ### Types
 
@@ -149,6 +151,13 @@ Label text: `text-transform: uppercase`, `font-weight: 700`, `letter-spacing: .0
 - The **diagonal stripe textures** on `.chilli-card` and the page `body` are part of the theme. Do not remove them.
 - Confetti is always 🌶️ emojis (`Confetti.tsx`). Do not swap for generic particle shapes.
 - Copy/microcopy should match the spicy tone: playful, warm, a little dramatic. Avoid bland generic labels.
+
+### Seasonal skins
+
+`apps/web/src/skins/` holds swappable skins (e.g. `halloween`), picked by date or forced with `?skin=<id>`.
+A skin may override the palette, confetti, hero emoji, tagline and banner decor, scoped to `[data-skin="<id>"]`.
+The rules above describe the default `chilli` skin. Every skin keeps the pepper vote cards and the chalkboard reveal.
+See `docs/groom-chilli/skins.md` in the parent Figure workspace.
 
 ### What not to do
 

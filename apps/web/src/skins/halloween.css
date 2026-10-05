@@ -1,0 +1,84 @@
+/* Halloween skin - every rule is scoped to <html data-skin="halloween">. */
+
+:root[data-skin="halloween"] {
+  --bg:        #F4E2C6;
+  --primary:   #D35400;
+  --primary-h: #A84300;
+  --accent:    #9C3D10;
+  --night:     #1F140E;
+  --glow:      #F0812A;
+}
+
+/* Night sky banner with a lone bat crossing it */
+[data-skin="halloween"] .banner {
+  background: var(--night);
+}
+[data-skin="halloween"] .banner::before {
+  content: '🎃 🦇 🕸️ 👻 🦇 🎃 🕸️ 👻 🦇 🎃';
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: .9;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--glow) 70%, transparent));
+}
+[data-skin="halloween"] .banner::after {
+  content: '🦇';
+  position: absolute;
+  top: 38%;
+  left: 0;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 6px var(--glow));
+  animation: halloween-bat 14s linear infinite;
+  pointer-events: none;
+}
+[data-skin="halloween"] .banner h1 {
+  color: var(--glow);
+  text-shadow: 0 0 18px color-mix(in srgb, var(--glow) 45%, transparent), 2px 3px 0 rgba(0,0,0,.35);
+}
+
+/* Cobweb hanging off the corner of every card */
+[data-skin="halloween"] .card {
+  position: relative;
+}
+[data-skin="halloween"] .card::before {
+  content: '🕸️';
+  position: absolute;
+  top: -14px;
+  right: -12px;
+  font-size: 2.4rem;
+  opacity: .85;
+  filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--text) 45%, transparent));
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+/* Selected and hover states are red-tinted in the base CSS; tint them pumpkin */
+[data-skin="halloween"] .btn-primary {
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+[data-skin="halloween"] .btn-secondary:hover {
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+}
+[data-skin="halloween"] .home-template-card.active {
+  background: color-mix(in srgb, var(--primary) 9%, var(--surface));
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+[data-skin="halloween"] .chilli-card:not(:disabled):hover {
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--primary) 28%, transparent);
+}
+[data-skin="halloween"] .chilli-card.selected {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--primary) 7%, var(--surface)) 0%, color-mix(in srgb, var(--primary) 15%, var(--surface)) 100%);
+  animation-name: halloween-pulse-border;
+}
+
+@keyframes halloween-pulse-border {
+  0%,100% { box-shadow: 0 6px 20px color-mix(in srgb, var(--primary) 32%, transparent); }
+  50%      { box-shadow: 0 6px 28px color-mix(in srgb, var(--glow) 60%, transparent); }
+}
+
+@keyframes halloween-bat {
+  0%   { transform: translate(-40px, 0) scaleX(-1); }
+  25%  { transform: translate(25vw, -14px) scaleX(-1); }
+  50%  { transform: translate(50vw, 6px) scaleX(-1); }
+  75%  { transform: translate(75vw, -10px) scaleX(-1); }
+  100% { transform: translate(calc(100vw + 40px), 0) scaleX(-1); }
+}

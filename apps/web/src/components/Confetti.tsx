@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { skin } from '../skins';
 import './Confetti.css';
-
-const HAPPY = ['🌶️', '🫑', '🔥', '🌮', '🪅', '💀'];
-const SAD   = ['🥀', '😭', '💔', '😢', '🌧️', '😩', '😿', '🫠'];
 
 interface Props {
   mode: 'happy' | 'sad';
@@ -16,7 +14,7 @@ export default function Confetti({ mode, onDone }: Props) {
     const container = containerRef.current;
     if (!container) return;
 
-    const pool = mode === 'happy' ? HAPPY : SAD;
+    const pool = mode === 'happy' ? skin.confettiHappy : skin.confettiSad;
     const pieces = Array.from({ length: 28 }, (_, i) => {
       const el = document.createElement('span');
       el.className = `confetti-piece ${mode === 'sad' ? 'confetti-piece--sad' : ''}`;

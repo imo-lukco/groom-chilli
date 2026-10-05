@@ -1,12 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { socket } from '../socket';
+import { socket, clientId } from '../socket';
 import { Room as RoomType, VoteValue, TEMPLATES, DEFAULT_TEMPLATE_ID } from '../types';
 import ChilliCard from '../components/ChilliCard';
 import PlayerList from '../components/PlayerList';
 import Results from '../components/Results';
 import Confetti from '../components/Confetti';
+import NameModal from '../components/NameModal';
+import PandaPeek from '../components/PandaPeek';
+import { skin } from '../skins';
 import './Room.css';
+
+// The permanent room from apps/server/src/roomManager.ts that gets the panda easter egg
+const PANDA_ROOM_ID = 'PANDA';
 
 export default function Room() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -17,6 +23,12 @@ export default function Room() {
   const [taskDraft, setTaskDraft] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const [confettiMode, setConfettiMode] = useState<'happy' | 'sad'>('happy');
+  const [playerName, setPlayerName] = useState(() => sessionStorage.getItem('playerName'));
+  const [error, setError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [showPanda, setShowPanda] = useState(false);
+  // Once per page load, so socket reconnects (which re-emit `joined`) do not replay it
+  const pandaShown = useRef(false);
 
   useEffect(() => {
     if (!socket.connected) socket.connect();
@@ -25,6 +37,10 @@ export default function Room() {
       setRoom(room);
       setMyId(playerId);
       setTaskDraft(room.task);
+      if (room.id === PANDA_ROOM_ID && !pandaShown.current) {
+        pandaShown.current = true;
+        setShowPanda(true);
+      }
     });
 
     socket.on('room_updated', ({ room }: { room: RoomType }) => {
@@ -40,23 +56,27 @@ export default function Room() {
       setTaskDraft((d) => (d !== room.task ? room.task : d));
     });
 
-    socket.on('error', ({ message }: { message: string }) => {
-      alert(message);
-      navigate('/');
+    socket.on('error', ({ message, code }: { message: string; code?: string }) => {
+      if (code === 'name_taken') {
+        sessionStorage.removeItem('playerName');
+        setPlayerName(null);
+        setNameError(message);
+      } else {
+        setError(message);
+      }
     });
 
     // Re-join the room whenever the socket (re)connects. socket.io reconnects
     // with a fresh socket.id after any network blip / tab backgrounding, and the
     // server keys rooms by socket.id — without re-joining, votes silently drop
     // and cards appear frozen until a manual refresh.
-    const name = sessionStorage.getItem('playerName');
+    // Without a name (e.g. opened from a shared link) the name popup is shown
+    // and the join waits until the player submits it.
     const rejoin = () => {
-      if (name && roomId) socket.emit('join_room', { roomId, playerName: name });
+      if (playerName && roomId) socket.emit('join_room', { roomId, playerName, clientId });
     };
 
-    if (!name && roomId) {
-      navigate('/');
-    } else {
+    if (playerName) {
       socket.on('connect', rejoin);
       if (!socket.connected) socket.connect();
       else rejoin();
@@ -68,13 +88,16 @@ export default function Room() {
       socket.off('room_updated');
       socket.off('error');
     };
-  }, [roomId, navigate]);
+  }, [roomId, playerName]);
 
-  // Persist player name to session on first join
+  // Persist player name to session on first join, and remember it for the next shared link
   useEffect(() => {
     if (myId && room) {
       const me = room.players.find((p) => p.id === myId);
-      if (me) sessionStorage.setItem('playerName', me.name);
+      if (me) {
+        sessionStorage.setItem('playerName', me.name);
+        localStorage.setItem('playerName', me.name);
+      }
     }
   }, [myId, room]);
 
@@ -96,17 +119,36 @@ export default function Room() {
   }
 
   function copyCode() {
-    const url = `${window.location.origin}/?room=${room?.id}`;
+    const url = `${window.location.origin}/room/${room?.id}`;
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
   }
 
+  const leaveToMenu = useCallback(() => navigate('/'), [navigate]);
+  const hidePanda = useCallback(() => setShowPanda(false), []);
+
+  const nameModal = (!playerName || error) && (
+    <NameModal
+      roomId={roomId ?? ''}
+      defaultName={localStorage.getItem('playerName') ?? ''}
+      error={error}
+      nameError={nameError}
+      onSubmit={(name) => {
+        sessionStorage.setItem('playerName', name);
+        setNameError('');
+        setPlayerName(name);
+      }}
+      onCancel={leaveToMenu}
+    />
+  );
+
   if (!room) {
     return (
       <main className="page room-loading">
-        <span className="room-loading-emoji">🌶️</span>
+        {nameModal}
+        <span className="room-loading-emoji">{skin.heroEmoji}</span>
         <p>Getting your table ready…</p>
       </main>
     );
@@ -114,6 +156,8 @@ export default function Room() {
 
   return (
     <main className="page">
+      {nameModal}
+      {showPanda && <PandaPeek onDone={hidePanda} />}
       {showConfetti && <Confetti mode={confettiMode} onDone={() => setShowConfetti(false)} />}
 
       {/* Room header */}
